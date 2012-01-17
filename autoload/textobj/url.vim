@@ -9,10 +9,8 @@ function! textobj#url#select_a()
   try
     let old_iskeyword = &iskeyword
     let &iskeyword = s:url_chars
-	call search('\>', 'bcW')
-    let head_pos = getpos('.')
-	call search('.\<', 'cW')
-    let tail_pos = getpos('.')
+    let head_pos = [0]+searchpos('\<', 'bcW')+[0]
+    let tail_pos = [0]+searchpos('.\<\|$', 'W')+[0]
   catch
   finally
     let &iskeyword = old_iskeyword
@@ -27,10 +25,8 @@ function! textobj#url#select_i()
   try
     let old_iskeyword = &iskeyword
     let &iskeyword = s:url_chars
-	call search('\>', 'bcW')
-    let head_pos = getpos('.')
-	call search('.\>', 'cw')
-    let tail_pos = getpos('.')
+    let head_pos = [0]+searchpos('\<', 'bcW')+[0]
+    let tail_pos = [0]+searchpos('.\>', 'W')+[0]
     let non_blank_char_exists_p = getline('.')[head_pos[2] - 1] !~# '\s'
   catch
 	let non_blank_char_exists_p = 0
