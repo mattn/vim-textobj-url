@@ -1,6 +1,6 @@
 let s:url_chars = join(
 \ range(48,57)+range(65,90)+range(97,122)
-\+split('_:/.-+%#?&=;@$,[]!''()*~,', '\zs'), ',')
+\+split('_:/.-+%#?&=;@$,!''*~,', '\zs'), ',')
 
 function! s:check_url(url)
   return a:url =~ '^\(http\|https\|ftp\)://\a[a-zA-Z0-9_-]*\(\.[a-zA-Z0-9][a-zA-Z0-9_-]*\)*\(:\d+\)\{0,1}'
