@@ -1,5 +1,5 @@
 function! s:extract_url(line)
-  let mx = '\(http\|https\|ftp\)://\a[a-zA-Z0-9_-]*\(\.[a-zA-Z0-9][a-zA-Z0-9_-]*\)*\(:\d+\)\{0,1}\(/[a-zA-Z0-9_/.\-+%#?&=;@$,!''*~]*\)\{0,1}'
+  let mx = '\(http\|https\|ftp\)://\a[a-zA-Z0-9_-]*\(\.[a-zA-Z0-9][a-zA-Z0-9_-]*\)*\(:\d+\)\?\(/[a-zA-Z0-9_/.\-+%?&=;@$,!''*~]*\)\?\(#[a-zA-Z0-9_/.\-+%#?&=;@$,!''*~]*\)'
   let pos1 = getpos('.')
   let pos2 = copy(pos1)
   let cpos = pos1[2]
@@ -9,7 +9,11 @@ function! s:extract_url(line)
     if mpos == -1
       throw "don't match"
     endif
-    let mlen = len(matchstr(a:line[(mpos == 0 ? 0 : mpos-1):], mx))
+    let mstr = matchstr(a:line[(mpos == 0 ? 0 : mpos-1):], mx)
+    let mlen = len(mstr)
+    if mstr =~ '[.,]$'
+      let mlen -= 1
+    endif
     if mpos <= cpos && cpos <= mpos + mlen
       break
     endif
